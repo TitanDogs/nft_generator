@@ -19,11 +19,12 @@ const generateAttributes = () => {
             for (let j = 0; j < traitList.length; j++) {
                 let traitValue = traitList[j].value;
 
-                let matches = generatedAttributes.filter(attributes =>
-                    attributes[traitType]?.trait_type === traitType
-                    &&
-                    attributes[traitType]?.value === traitValue
-                )
+                let matches = generatedAttributes.filter(attributes => {
+                    if (attributes[traitType]) {
+                        return attributes[traitType].trait_type === traitType &&
+                            attributes[traitType].value === traitValue
+                    }
+                })
 
                 if (matches.length < NFT_NUMBER * traitList[j].rarity) {
                     generatedAttributes[i][traitType] = { trait_type: traitType, value: traitValue };
@@ -37,7 +38,7 @@ const generateAttributes = () => {
 
 
     if (!fs.existsSync("./assets/list")) {
-        fs.mkdirSync("./assets/list");
+        fs.mkdirSync("./assets/list", { recursive: true });
     }
 
     let generatedAttributeList = generatedAttributes.map(attributes => Object.values(attributes));
@@ -51,12 +52,10 @@ const generateMetaData = (index, attributes) => {
 
     metaData.image = `${index}.${IMAGE_FORMAT}`;
     metaData.attributes = attributes;
-    metaData.properties.files = [
-        {
-            "uri": `${index}.${IMAGE_FORMAT}`,
-            "type": `image/${IMAGE_FORMAT}`
-        }
-    ]
+    metaData.properties.files = [{
+        "uri": `${index}.${IMAGE_FORMAT}`,
+        "type": `image/${IMAGE_FORMAT}`
+    }]
 
     console.log(`MetaData ${index} generated`);
     return metaData
