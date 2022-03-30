@@ -1,5 +1,6 @@
 const fs = require("fs");
-const allAttributesBuffer = fs.readFileSync("./json/attributes.json");
+const path = require("path");
+const allAttributesBuffer = fs.readFileSync(path.join(__dirname,"./json/attributes.json"));
 const { attributeRarity, traitTypeCheck } = require("./tools/rarity");
 const shuffle = require("./tools/shuffle");
 
@@ -37,17 +38,17 @@ const generateAttributes = () => {
     }
 
 
-    if (!fs.existsSync("./assets/list")) {
-        fs.mkdirSync("./assets/list", { recursive: true });
+    if (!fs.existsSync(path.join(__dirname, "./assets/list"))) {
+        fs.mkdirSync(path.join(__dirname, "./assets/list"), { recursive: true });
     }
 
     let generatedAttributeList = generatedAttributes.map(attributes => Object.values(attributes));
-    fs.writeFileSync(`./assets/list/attributeList.json`, JSON.stringify(generatedAttributeList, null, "\t"));
+    fs.writeFileSync(path.join(__dirname, `./assets/list/attributeList.json`), JSON.stringify(generatedAttributeList, null, "\t"));
     return generatedAttributeList
 }
 
 const generateMetaData = (index, attributes) => {
-    const metaDataBuffer = fs.readFileSync("./json/template.json");
+    const metaDataBuffer = fs.readFileSync(path.join(__dirname, "./json/template.json"));
     let metaData = JSON.parse(metaDataBuffer.toString());
 
     metaData.image = `${index}.${IMAGE_FORMAT}`;
@@ -69,7 +70,7 @@ const start = (nftNumber) => {
         let attributes = generatedAttributes[i];
         let metaData = generateMetaData(i, attributes);
 
-        fs.writeFileSync(`./assets/${i}.json`, JSON.stringify(metaData, null, "\t"));
+        fs.writeFileSync(path.join(__dirname,`./assets/${i}.json`), JSON.stringify(metaData, null, "\t"));
     }
 
     console.log("Process complete. metaDatas generated.");
