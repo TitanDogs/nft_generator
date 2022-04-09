@@ -81,6 +81,6 @@ const start = (nftNumber) => {
 }
 
 const IMAGE_FORMAT = "png"
-const NFT_NUMBER = 100;
+const NFT_NUMBER = 10;
 
 start(NFT_NUMBER);

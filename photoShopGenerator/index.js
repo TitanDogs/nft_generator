@@ -152,20 +152,25 @@ function generateImage(metaData, fileName) {
         var idList = [];
 
         var attributes = metaData.attributes;
-        var mainColor = getTraitValue("Main Color", attributes);
-        var baseColor = getTraitValue("Base Color", attributes);
+        // var mainColor = getTraitValue("Main Color", attributes);
+        // var baseColor = getTraitValue("Base Color", attributes);
 
         for (var j = 0; j < attributes.length; j++) {
-            var attributeName = attributes[j].trait_type;
             var attributeValue = attributes[j].value;
             
-            if (attributeName === "Dog Breed" || attributeName === "Background") {
-                idList.push(getIdFromLayerName(attributeValue));
-            } else {
-                idList.push(getIdFromLayerName(attributeValue + "_layer"));                
-                idList.push(getIdFromLayerName(attributeValue + "_" + mainColor));
-                idList.push(getIdFromLayerName(attributeValue + "_" + baseColor));
-            }            
+            idList.push(getIdFromLayerName(attributeValue));
+
+            //Conditions used in the TitanDogs example (cf: Youtube Video)
+
+            // var attributeName = attributes[j].trait_type;
+            
+            // if (attributeName === "Dog Breed" || attributeName === "Background") {
+            //     idList.push(getIdFromLayerName(attributeValue));
+            // } else {
+            //     idList.push(getIdFromLayerName(attributeValue + "_layer"));                
+            //     idList.push(getIdFromLayerName(attributeValue + "_" + mainColor));
+            //     idList.push(getIdFromLayerName(attributeValue + "_" + baseColor));
+            // }
         }
 
         showLayers(idList);
@@ -187,7 +192,7 @@ function start() {
     resetLayers();
 
     var i = 0;
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < NFT_NUMBER; i++) {
         var scriptFile = File("./assets/" + i + ".json");
         scriptFile.open('r');
         var content = scriptFile.read();
@@ -199,5 +204,7 @@ function start() {
         }
     }
 }
+
+var NFT_NUMBER = 10;
 
 start();
