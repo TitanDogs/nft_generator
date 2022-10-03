@@ -42,7 +42,7 @@ function selectLayerByID(ID) {
             desc.putBoolean(charIDToTypeID('MkVs'), false);
 
             executeAction(charIDToTypeID('slct'), desc, DialogModes.NO);
-        } 
+        }
     } catch (error) {
         //alert(error);
     }
@@ -157,13 +157,13 @@ function generateImage(metaData, fileName) {
 
         for (var j = 0; j < attributes.length; j++) {
             var attributeValue = attributes[j].value;
-            
+
             idList.push(getIdFromLayerName(attributeValue));
 
             //Conditions used in the TitanDogs example (cf: Youtube Video)
 
             // var attributeName = attributes[j].trait_type;
-            
+
             // if (attributeName === "Dog Breed" || attributeName === "Background") {
             //     idList.push(getIdFromLayerName(attributeValue));
             // } else {
@@ -174,7 +174,7 @@ function generateImage(metaData, fileName) {
         }
 
         showLayers(idList);
-        saveImage("./assets", fileName)
+        saveImage(doc.path + "/assets", fileName)
         hideLayers(idList);
 
     } catch (error) {
@@ -193,10 +193,16 @@ function start() {
 
     var i = 0;
     for (var i = 0; i < NFT_NUMBER; i++) {
-        var scriptFile = File("./assets/" + i + ".json");
+        var scriptFile = File(doc.path + "/assets/" + i + ".json");
         scriptFile.open('r');
         var content = scriptFile.read();
         scriptFile.close();
+
+        if (!content) {
+            alert("content not found for " + i + ".json");
+            continue;
+        }
+
         var metaData = JSON.parse(content);
 
         if (metaData) {
